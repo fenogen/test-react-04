@@ -1,11 +1,11 @@
 import React from "react";
 import "./CartItem.css";
 
-
-const CartItem = ({img, title, style, price, curencyFormat}) => {
+const CartItem = ({img,title, style,price,currencyFormat,quantity,removeFromCart,id}) => {
+  
   return (
     <div class="cart-item">
-    <div class="cart-item__del"></div>
+    <div onClick={()=>removeFromCart(id)} class="cart-item__del"></div>
     <div class="cart-item__thumb">
       <img
         src={img}
@@ -17,14 +17,15 @@ const CartItem = ({img, title, style, price, curencyFormat}) => {
       <p class="desc">
         {style}
       </p>
-      <p class="desc">Quantity: 1</p>
+      <p class="desc">Quantity: {quantity}</p>
     </div>
     <div class="cart-item__price">
-      <p>$ {price}</p>
+      <p>{currencyFormat} {(price * quantity).toFixed(2)}</p>
       <button disabled="" class="change-product-button">-</button
       ><button class="change-product-button">+</button>
     </div>
   </div>
   );
 };
+
 export default CartItem;

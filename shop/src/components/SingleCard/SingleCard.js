@@ -11,8 +11,8 @@ const SingleCard = ({
   img,
   isFreeShipping,
   type,
-  id,
-  addToCart
+  addToCart,
+  id
 }) => {
   // const { style, price, title, currencyFormat, img, isFreeShipping, type } = props;
   // console.log("props", props);
@@ -30,10 +30,7 @@ const SingleCard = ({
           {currencyFormat} {price}
         </div>
       </div>
-      <div
-      onClick={() => addToCart(id)}           // Если вынести за return - не работает, если не обявить доп. (), то addToCart сразу сработает 
-      className={type}
-      >Add to cart</div>
+      <div onClick={()=>addToCart(id)} className={type}>Add to cart</div>
       {/* {type && <div className={type}>Add to cart</div>} */}
       {/* <div className="card-item__buy-btn">Add to cart</div> */}
     </CardItem>

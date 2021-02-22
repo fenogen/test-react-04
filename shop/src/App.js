@@ -1,86 +1,62 @@
-import React, { Component } from 'react'
+import React, { useState } from "react";
 import Counter from "./components/Counter/Counter";
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 import Section from "./components/Section/Section";
-import Cart from "./components/Cart/Cart"
-import products from './db/product.json'
+import Cart from "./components/Cart/Cart";
+import products from "./db/product.json";
 
-export default class App extends Component {
-state = {
-  isCartOpen: false,
-  order: [],
-  productsList: products,
-  total: 0,
-}
 
-// cartToogle(){
-//   this.setState({isCartOpen: !this.state.isCartOpen})             //---> Если использовать обычную ф-ю
-// }
+const App = () => {
+const [isCartOpen, setIsCartOpen] = useState(false);
+const [order, setOrder] = useState([]);
+const [productList, setProductList] = useState(products);
 
-cartToogle = () => {
-  this.setState({isCartOpen: !this.state.isCartOpen})               //---> Если использовать острелочную ф-ю
-}
+const cartToogle = () => {
+    setIsCartOpen(!isCartOpen);
+  };
 
-addToCart = async(id) => {                                               // Для тотала нужна синхронность вреде
-  console.log(id)
-  const orderItem = this.state.order.find((el) => el.id === id)
-  // ordertItem.quantity = 1
 
-  const productItem = this.state.productsList.find(el => el.id === id)
-  // this.setState({order: [orderItem]})                           //---> если история не важна
-  await this.setState((prevState) => ({
-    order: orderItem
-     ? this.state.order.map((el) => 
-      el.id === id ? {...el, quantity: el.quantity + 1} : el)
-      : [...prevState.order, {...productItem, quantity: 1}],
-  }))
-    // order: [...prevState.order, productItem,]))
-  console.log(this.state.order)
-  if (this.state.order.length > 0) {
-    this.total();
-  }
-}
+  const addToCart = (id) => {
+    const orderItem = order.find((el) => el.id === id);
+    const productItem = productList.find((el) => el.id === id);
 
-total = () => {
-  console.log('hello')
-  const result = this.state.order.reduce(
-    (sum, product) => {
-    return sum + product.price}, 0)
-    this.setState ({total: result.toFixed(2)});
-}
+    if (orderItem) {
+      const result = order.map((el) => {
+      return el.id === id ? { ...el, quantity: el.quantity + 1 } : el
+      });
+      setOrder(result);
+    } else {
+      setOrder ([...order, { ...productItem, quantity: 1 }])
+  }}
 
-  render() {
-    return (
-      <>
-      <Header />
-      <Main addToCart={this.addToCart}/>               
-      <Cart 
-      statusCart={this.state.isCartOpen}               //*Можно деструктуризировать
-      cartToogle={this.cartToogle}
-      total={this.state.total}
-      order={this.state.order}/>                       {/*Если использовать острелочную ф-ю*/}
-      {/* <Cart statusCart={this.state.isCartOpen} cartToogle={this.cartToogle.bind((this))}/>   //---> Если использовать обычную ф-ю */}
+  const removeFromCart = (id) => {
+    const result = order.filter(el=> el.id !== id);
+    setOrder(result);
+  };
 
-      {/* <Counter title="We test our counter"/> */}
-    </>
-    )
-  }
+
+    const total = () => {
+    const result = order.reduce((sum, product) => {
+      return sum + product.price * product.quantity;
+    }, 0);
+    return result;
+  };
+
+  return (
+    <div>
+      <Header />   
+      <Main addToCart={addToCart} />
+      <Cart
+          statusCart={isCartOpen}
+          cartToogle={cartToogle}
+          removeFromCart={removeFromCart}
+          order={order}
+          total={total()}
+        />
+        </div>
+  )
 }
 
 
-
-// const App = () => {
-//   return (
-//     <>
-//       <Header />
-//       <Main />
-//       <Cart />
-//       {/* <Counter title="We test our counter"/> */}
-//     </>
-//   );
-// };
-
-
-// export default App;
-
+export default App;

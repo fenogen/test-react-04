@@ -2,16 +2,17 @@ import React from "react";
 import "./Cart.css";
 import CartItem from "../CartItem/CartItem";
 
+const Cart = ({ statusCart, cartToogle, order, total,removeFromCart }) => {
 
 
-const Cart = ({statusCart, cartToogle, order, total}) => {
-  
   return (
-    <div 
-    onClick={cartToogle}
-    className={statusCart ? 'float-cart float-cart--open' : 'float-cart'}>
+    <div
+      
+      className={statusCart ? "float-cart float-cart--open" : "float-cart"}
+    >
       {/* <!-- cart icon start  --> */}
-      <span className="bag bag--float-cart-closed">
+      <span onClick={cartToogle}
+       className="bag bag--float-cart-closed">
         <span className="bag__quantity">{order.length}</span>
       </span>
       {/* <!-- cart icon end --> */}
@@ -23,16 +24,12 @@ const Cart = ({statusCart, cartToogle, order, total}) => {
           <span className="float-cart__header-title">Cart </span>
         </div>
         <div className="float-cart__card-container">
-          {order.map(el=> 
-          <CartItem 
-          key={el.id} 
-          {...el}/>)}
-          
+          {order.map(el=> <CartItem key={el.id} {...el} removeFromCart={removeFromCart}/>)}
         </div>
         <div className="float-cart__footer">
           <div className="total">
             <p className="sub">TOTAL</p>
-            <p className="price-total">${total}</p>
+            <p className="price-total">$ {total} </p>
           </div>
           <div className="buy-btn">Checkout</div>
         </div>

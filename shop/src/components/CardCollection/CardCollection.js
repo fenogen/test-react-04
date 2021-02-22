@@ -25,9 +25,9 @@ const CardCollection = ({addToCart}) => {
       <div className="card-block">
         {products.map((el) => (
           <SingleCard
-            addToCart={addToCart}
             key={el.id}
             {...el}
+            addToCart={addToCart}
             // style={el.style}
             // img={el.img}
             // currency={el.currencyFormat}
